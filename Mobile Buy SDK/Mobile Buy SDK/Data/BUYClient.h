@@ -248,11 +248,6 @@ typedef void (^BUYDataGiftCardBlock)(BUYGiftCard *giftCard, NSError *error);
 @property (nonatomic, strong, readonly) NSString *channelId;
 
 /**
- *  The Merchant ID is used for Apple Pay and set using `enableApplePayWithMerchantId:`
- */
-@property (nonatomic, strong, readonly) NSString *merchantId DEPRECATED_MSG_ATTRIBUTE("Set the `merchantId` on a BUYViewController subclass");
-
-/**
  *  Application name to attribute orders to.  Defaults to app bundle name (CFBundleName)
  */
 @property (nonatomic, strong) NSString *applicationName;
@@ -508,14 +503,5 @@ typedef void (^BUYDataGiftCardBlock)(BUYGiftCard *giftCard, NSError *error);
  *  @return The associated NSURLSessionDataTask
  */
 - (NSURLSessionDataTask *)removeProductReservationsFromCheckout:(BUYCheckout *)checkout completion:(BUYDataCheckoutBlock)block;
-
-#pragma mark - Deprecated methods
-
-/**
- *  Enable Apple Pay by calling this method with the Merchant ID provided via Apple Pay setup in the Mobile SDK Channel on Shopify Admin
- *
- *  @param merchantId The Merchant ID generated on Shopify Admin
- */
-- (void)enableApplePayWithMerchantId:(NSString *)merchantId DEPRECATED_MSG_ATTRIBUTE("Set the merchantId on a BUYViewController subclass instead");
 
 @end 

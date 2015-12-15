@@ -324,11 +324,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		90DAEC341BC6E50B007555A5 /* PBXContainerItemProxy */ = {
+		903E8A521C2090D100589767 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F773741519C770CB0039681C /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = BE9A64271B503C2F0033E558;
+			remoteGlobalIDString = 901930E11BC5B9BC00D1134E;
 			remoteInfo = Buy;
 		};
 		90E78A4C1BD58F0C005D16C3 /* PBXContainerItemProxy */ = {
@@ -1055,7 +1055,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				90DAEC351BC6E50B007555A5 /* PBXTargetDependency */,
+				903E8A531C2090D100589767 /* PBXTargetDependency */,
 			);
 			name = "Mobile Buy SDK Tests";
 			productName = "Mobile Buy SDK Tests";
@@ -1353,10 +1353,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		90DAEC351BC6E50B007555A5 /* PBXTargetDependency */ = {
+		903E8A531C2090D100589767 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = BE9A64271B503C2F0033E558 /* Buy Static */;
-			targetProxy = 90DAEC341BC6E50B007555A5 /* PBXContainerItemProxy */;
+			target = 901930E11BC5B9BC00D1134E /* Buy */;
+			targetProxy = 903E8A521C2090D100589767 /* PBXContainerItemProxy */;
 		};
 		90E78A4D1BD58F0C005D16C3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

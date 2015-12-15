@@ -149,12 +149,6 @@
 	
 	self.order = [BUYOrder convertObject:dictionary[@"order"]];
 	
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-	self.orderId = self.order.identifier;
-	self.orderStatusURL = self.order.statusURL;
-#pragma GCC diagnostic pop
-	
 	self.webCheckoutURL = [NSURL URLWithString:dictionary[@"web_url"]];
 	NSDateFormatter *dateFormatter = [NSDateFormatter dateFormatterForPublications];
 	self.createdAtDate = [dateFormatter dateFromString:dictionary[@"created_at"]];

@@ -287,16 +287,4 @@
  */
 - (BOOL)hasToken;
 
-#pragma mark - Deprecated properties
-
-/**
- *  The unique order ID
- */
-@property (nonatomic, copy, readonly) NSNumber *orderId DEPRECATED_MSG_ATTRIBUTE("Available on the BUYOrder object");
-
-/**
- *  URL for the website showing the order status
- */
-@property (nonatomic, strong, readonly) NSURL *orderStatusURL DEPRECATED_MSG_ATTRIBUTE("Available on the BUYOrder object");
-
 @end

@@ -159,18 +159,6 @@
 	}];
 }
 
-- (void)testMerchantId
-{
-	NSString *merchantId = @"com.merchant.id";
-	
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-	[self.client enableApplePayWithMerchantId:merchantId];
-	
-	XCTAssertEqualObjects(merchantId, self.client.merchantId);
-#pragma GCC diagnostic pop
-}
-
 - (void)testStatusCodeConversions
 {
 	BUYStatus status = [BUYClient statusForStatusCode:412 error:nil];

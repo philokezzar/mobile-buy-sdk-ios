@@ -28,11 +28,6 @@
 
 @implementation BUYClient (Test)
 
-- (BOOL)testIntegration
-{
-	return [self testIntegrationWithMerchantId:self.merchantId];
-}
-
 - (BOOL)testIntegrationWithMerchantId:(NSString *)merchantId;
 {
 	NSLog(@"Remove this call once integration succeeds.  This should never be called in production code!!");

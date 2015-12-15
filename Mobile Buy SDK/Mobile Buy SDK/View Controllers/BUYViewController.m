@@ -349,12 +349,7 @@ NSString * BUYURLKey = @"url";
 {
 	PKPaymentRequest *paymentRequest = [[PKPaymentRequest alloc] init];
 	
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-	NSString *merchantId = self.client.merchantId ? : self.merchantId;
-#pragma GCC diagnostic pop
-	
-	[paymentRequest setMerchantIdentifier:merchantId];
+	[paymentRequest setMerchantIdentifier:self.merchantId];
 	[paymentRequest setRequiredBillingAddressFields:PKAddressFieldAll];
 	[paymentRequest setRequiredShippingAddressFields:self.checkout.requiresShipping ? PKAddressFieldAll : PKAddressFieldEmail|PKAddressFieldPhone];
 	[paymentRequest setSupportedNetworks:self.supportedNetworks];
