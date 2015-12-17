@@ -98,13 +98,16 @@ float const imageDuration = 0.1f;
 
 - (void)loadImageWithURL:(NSURL *)imageURL setImage:(BOOL)setImage completion:(void (^)(UIImage *image, NSError *error))completion
 {
+ 
+    NSURL *newUrl = [self manipulateImageUrl:imageURL.absoluteString];
+    
 	if (self.task) {
 		[self cancelImageTask];
 	}
 	if (self.showsActivityIndicator) {
 		[self.activityIndicatorView startAnimating];
 	}
-	self.task = [[NSURLSession sharedSession] dataTaskWithURL:imageURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+	self.task = [[NSURLSession sharedSession] dataTaskWithURL:newUrl completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			UIImage *image = [UIImage imageWithData:data];
 			if (setImage) {
@@ -132,6 +135,28 @@ float const imageDuration = 0.1f;
 - (BOOL)isPortraitOrSquare
 {
 	return self.image.size.height >= self.image.size.width;
+}
+
+- (NSURL*)manipulateImageUrl:(NSString*)imageUrl {
+    
+    NSString *newURL = imageUrl;
+    newURL = [NSString stringWithFormat:@"https://res.cloudinary.com/drnl3gnpa/image/fetch/%@",newURL];
+    newURL = [self searchAndReplaceText:newURL replacedWith:@""];
+    NSURL *url = [NSURL URLWithString:newURL];
+    
+    return url;
+}
+
+- (NSString*)searchAndReplaceText:(NSString *)originalString replacedWith:(NSString*)replacement
+{
+    NSString *string = originalString;
+    NSError *error = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(\\?v=\\d*)" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSString *modifiedString = [regex stringByReplacingMatchesInString:string options:0 range:NSMakeRange(0, [string length]) withTemplate:replacement];
+    NSLog(@"%@", modifiedString);
+    return modifiedString;
+    
+    
 }
 
 @end
