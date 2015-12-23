@@ -26,6 +26,7 @@
 
 #import "BUYImageView.h"
 #import "BUYTheme+Additions.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 float const imageDuration = 0.1f;
 
@@ -74,52 +75,55 @@ float const imageDuration = 0.1f;
 
 - (void)loadImageWithURL:(NSURL *)imageURL animateChange:(BOOL)animateChange completion:(void (^)(UIImage *image, NSError *error))completion
 {
-	[self loadImageWithURL:imageURL setImage:NO completion:^(UIImage *image, NSError *error) {
-		if (animateChange) {
-			[UIView transitionWithView:self
-							  duration:0.15f
-							   options:(UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionBeginFromCurrentState)
-							animations:^{
-								self.image = image;
-							}
-							completion:^(BOOL finished) {
-								if (completion) {
-									completion(image, error);
-								}
-							}];
-		} else {
-			self.image = image;
-			if (completion) {
-				completion(image, error);
-			}
-		}
-	}];
-}
+    NSURL *newUrl = [self manipulateImageUrl:imageURL.absoluteString];
+
+    [self sd_setImageWithURL:newUrl placeholderImage:[UIImage imageNamed:@"loading-squared"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+        if (animateChange) {
+            [UIView transitionWithView:self
+                              duration:0.15f
+                               options:(UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionBeginFromCurrentState)
+                            animations:^{
+                                self.image = image;
+                            }
+                            completion:^(BOOL finished) {
+                                if (completion) {
+                                    completion(image, error);
+                                }
+                            }];
+        } else {
+            self.image = image;
+            if (completion) {
+                completion(image, error);
+            }
+        }
+        
+    }];
+  }
 
 - (void)loadImageWithURL:(NSURL *)imageURL setImage:(BOOL)setImage completion:(void (^)(UIImage *image, NSError *error))completion
 {
  
+    if([self isSmallThumbnail:imageURL.absoluteString]){
+        // ignore and don't process
+        // immediately return completion
+        if(completion){
+            completion(nil, nil);
+        }
+        return;
+    }
+    
+    
     NSURL *newUrl = [self manipulateImageUrl:imageURL.absoluteString];
     
-	if (self.task) {
-		[self cancelImageTask];
-	}
-	if (self.showsActivityIndicator) {
-		[self.activityIndicatorView startAnimating];
-	}
-	self.task = [[NSURLSession sharedSession] dataTaskWithURL:newUrl completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			UIImage *image = [UIImage imageWithData:data];
-			if (setImage) {
-				self.image = image;
-			}
-			[self.activityIndicatorView stopAnimating];
-			if (completion) {
-				completion(image, error);
-			}
-		});
-	}];
-	[self.task resume];
+
+    [self sd_setImageWithURL:newUrl placeholderImage:[UIImage imageNamed:@"loading-squared"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        [self.activityIndicatorView stopAnimating];
+        if (completion) {
+            completion(image, error);
+        }
+    }];
+    
 }
 
 - (void)cancelImageTask {
@@ -140,7 +144,7 @@ float const imageDuration = 0.1f;
 - (NSURL*)manipulateImageUrl:(NSString*)imageUrl {
     
     NSString *newURL = imageUrl;
-    newURL = [NSString stringWithFormat:@"https://res.cloudinary.com/drnl3gnpa/image/fetch/%@",newURL];
+    newURL = [NSString stringWithFormat:@"https://res.cloudinary.com/drnl3gnpa/image/fetch/t_mobile_shopify_detail/%@",newURL];
     newURL = [self searchAndReplaceText:newURL replacedWith:@""];
     NSURL *url = [NSURL URLWithString:newURL];
     
@@ -157,6 +161,10 @@ float const imageDuration = 0.1f;
     return modifiedString;
     
     
+}
+
+- (BOOL)isSmallThumbnail:(NSString*)path{
+    return ([path rangeOfString:@"_small"].location != NSNotFound);
 }
 
 @end
